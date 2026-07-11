@@ -769,7 +769,8 @@ const PROJECTS = [
      en:"Paired work with task splitting and regular check-ins with the client to validate each feature."},
     {fr:["Catalogue", "Fiche produit", "Panier"], en:["Catalog", "Product page", "Cart"]},
     "https://github.com/abdoulcoulibaly-web/essence", null,
-    [{type:"video", src:"assets/video/projects/essence-1.mp4"}])
+    [{type:"video", src:"assets/video/projects/essence-1.mp4"}],
+    "1280/812")
 ];
 
 const EXPERIENCES = [
@@ -1056,7 +1057,7 @@ function buildCarousel(container, mediaItems, opts){
     }
   }, 200);
 
-  return { stop(){ clearTimeout(startTimer); clearInterval(timer); }, next, prev, goTo };
+  return { stop(){ clearTimeout(startTimer); clearInterval(timer); container.querySelectorAll('video').forEach(v=>v.pause()); }, next, prev, goTo };
 }
 
 function initAboutCarousel(){
@@ -1202,6 +1203,7 @@ function openModal(p){
     demoLink.href = p.demo; demoLink.style.display = '';
     demoStatus.style.display = 'none';
   } else {
+    demoLink.removeAttribute('href');
     demoLink.style.display = 'none';
     demoStatus.style.display = '';
   }
