@@ -858,7 +858,7 @@ function renderSkills(){
       </div>
       <div>${cat.items.map(s=>`
         <div class="skill-row">
-          <div class="skill-row-top"><span style="font-weight:500;color:var(--text-strong);">${L(s.name)}</span><span style="color:var(--text-dim);">${s.level}%</span></div>
+          <div class="skill-row-top"><span style="font-weight:500;color:var(--text-strong);">${L(s.name)}</span><span class="skill-pct" style="color:var(--text-dim);" data-count="${s.level}" data-suffix="%">0%</span></div>
           <div class="skill-bar-bg"><div class="skill-bar-fill" data-level="${s.level}"></div></div>
         </div>`).join('')}
       </div>`;
@@ -1144,6 +1144,7 @@ function setLanguage(lang){
   // keep skill bars filled if already revealed
   if(document.getElementById('skills').classList.contains('in')){
     document.querySelectorAll('.skill-bar-fill').forEach(bar=> bar.style.width = bar.dataset.level + '%');
+    document.querySelectorAll('.skill-pct').forEach(animateCount);
   }
   // reset typed text loop to new language roles
   typedIndex = 0; charIndex = 0; deleting = false;
@@ -1304,12 +1305,13 @@ typeTick();
 /* ---------- SCROLL REVEAL ---------- */
 function animateCount(el){
   const target = parseInt(el.dataset.count, 10);
+  const suffix = el.dataset.suffix != null ? el.dataset.suffix : '+';
   const duration = 1400;
   const start = performance.now();
   function tick(now){
     const progress = Math.min((now - start) / duration, 1);
     const eased = 1 - Math.pow(1 - progress, 3);
-    el.textContent = Math.round(target * eased) + '+';
+    el.textContent = Math.round(target * eased) + suffix;
     if(progress < 1) requestAnimationFrame(tick);
   }
   requestAnimationFrame(tick);
@@ -1322,6 +1324,7 @@ const observer = new IntersectionObserver((entries)=>{
       entry.target.classList.add('in');
       if(entry.target.id === 'skills'){
         document.querySelectorAll('.skill-bar-fill').forEach(bar=> bar.style.width = bar.dataset.level + '%');
+        document.querySelectorAll('.skill-pct').forEach(animateCount);
       }
     }
   });
