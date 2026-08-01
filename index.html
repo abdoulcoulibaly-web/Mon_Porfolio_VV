@@ -377,9 +377,9 @@
         <p style="color:var(--text-dim);font-size:16.5px;" data-i18n="aboutP3">Je m'intéresse également à la cybersécurité et au réseautique, dans une optique d'architectures modernes et sécurisées.</p>
         <p style="color:var(--text-dim);font-size:16.5px;margin-bottom:36px;" data-i18n="aboutP4">Je construis régulièrement des projets concrets pour progresser et renforcer mes compétences en ingénierie logicielle.</p>
         <div class="stats-grid">
-          <div class="card stat"><div class="stat-num grad-text">3+</div><div class="stat-label" data-i18n="statYears">Années d'études</div></div>
-          <div class="card stat"><div class="stat-num grad-text">8+</div><div class="stat-label" data-i18n="statProjects">Projets réalisés</div></div>
-          <div class="card stat"><div class="stat-num grad-text">15+</div><div class="stat-label" data-i18n="statTech">Technologies</div></div>
+          <div class="card stat"><div class="stat-num grad-text" data-count="3">3+</div><div class="stat-label" data-i18n="statYears">Années d'études</div></div>
+          <div class="card stat"><div class="stat-num grad-text" data-count="8">8+</div><div class="stat-label" data-i18n="statProjects">Projets réalisés</div></div>
+          <div class="card stat"><div class="stat-num grad-text" data-count="15">15+</div><div class="stat-label" data-i18n="statTech">Technologies</div></div>
         </div>
       </div>
       <div class="about-visual">
@@ -1289,6 +1289,19 @@ function typeTick(){
 typeTick();
 
 /* ---------- SCROLL REVEAL ---------- */
+function animateCount(el){
+  const target = parseInt(el.dataset.count, 10);
+  const duration = 1400;
+  const start = performance.now();
+  function tick(now){
+    const progress = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.round(target * eased) + '+';
+    if(progress < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+let statsAnimated = false;
 const revealEls = document.querySelectorAll('[data-reveal]');
 const observer = new IntersectionObserver((entries)=>{
   entries.forEach(entry=>{
@@ -1303,6 +1316,20 @@ const observer = new IntersectionObserver((entries)=>{
 revealEls.forEach(el=>observer.observe(el));
 const skillsSection = document.getElementById('skills');
 observer.observe(skillsSection);
+
+const statsGrid = document.querySelector('.stats-grid');
+if(statsGrid){
+  const statsObserver = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting && !statsAnimated){
+        statsAnimated = true;
+        document.querySelectorAll('.stat-num').forEach(animateCount);
+        statsObserver.disconnect();
+      }
+    });
+  }, { threshold: 0.6 });
+  statsObserver.observe(statsGrid);
+}
 
 /* ---------- LOADING SCREEN ---------- */
 const loading = document.getElementById('loading');
