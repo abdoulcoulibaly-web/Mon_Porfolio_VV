@@ -82,6 +82,7 @@
   @keyframes ringSpin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
   @keyframes ringSwingBlue{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
   @keyframes ringSwingPurple{from{transform:rotate(0deg);}to{transform:rotate(-360deg);}}
+  @keyframes kenBurns{from{transform:scale(1);}to{transform:scale(1.08);}}
   @keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
   @keyframes techScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
   @keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
@@ -163,13 +164,14 @@
   .media-slide .media-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(22px) brightness(.55);transform:scale(1.15);}
   .media-slide .media-fg{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;}
   .media-slide .media-cover{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
+  .media-slide.active img.media-cover{animation:kenBurns 5s ease-out forwards;}
   .media-nav{position:absolute;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;background:rgba(15,23,42,.55);border:1px solid rgba(255,255,255,.25);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:5;font-size:14px;transition:background .2s ease;padding:0;}
   .media-nav:hover{background:rgba(59,130,246,.9);}
   .media-nav-prev{left:10px;}
   .media-nav-next{right:10px;}
   .media-dots{position:absolute;bottom:10px;left:0;right:0;display:flex;justify-content:center;gap:6px;z-index:5;}
-  .media-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.45);border:none;padding:0;cursor:pointer;transition:background .2s ease,transform .2s ease;}
-  .media-dot.active{background:#fff;transform:scale(1.35);}
+  .media-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.6);border:none;padding:0;cursor:pointer;box-shadow:0 0 0 1.5px rgba(0,0,0,.4),0 1px 3px rgba(0,0,0,.3);transition:background .2s ease,transform .2s ease;}
+  .media-dot.active{background:#fff;transform:scale(1.35);box-shadow:0 0 0 1.5px rgba(0,0,0,.5),0 1px 4px rgba(0,0,0,.35);}
 
   /* SKILLS */
   .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:28px;}
@@ -1031,7 +1033,7 @@ function buildCarousel(container, mediaItems, opts){
   function next(){ goTo(current+1); }
   function prev(){ goTo(current-1); }
 
-  if(opts.controls && mediaItems.length > 1){
+  if((opts.controls || opts.arrows) && mediaItems.length > 1){
     const prevBtn = document.createElement('button');
     prevBtn.type = 'button'; prevBtn.className = 'media-nav media-nav-prev'; prevBtn.setAttribute('aria-label','précédent');
     prevBtn.innerHTML = '<i class="fa-solid fa-chevron-left"></i>';
@@ -1042,7 +1044,9 @@ function buildCarousel(container, mediaItems, opts){
     nextBtn.addEventListener('click', (e)=>{ e.stopPropagation(); next(); });
     container.appendChild(prevBtn);
     container.appendChild(nextBtn);
+  }
 
+  if((opts.controls || opts.dots) && mediaItems.length > 1){
     const dotsWrap = document.createElement('div');
     dotsWrap.className = 'media-dots';
     mediaItems.forEach((_, i)=>{
@@ -1069,7 +1073,7 @@ function initAboutCarousel(){
   const container = document.getElementById('about-slides');
   const fallback = document.getElementById('about-fallback');
   if(!container) return;
-  buildCarousel(container, ABOUT_MEDIA, { fallback, alt:'Coulibaly Abdoul-Ganime', mode:'cover' });
+  buildCarousel(container, ABOUT_MEDIA, { fallback, alt:'Coulibaly Abdoul-Ganime', mode:'cover', dots:true });
 }
 
 function renderTechCloud(){
