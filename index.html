@@ -126,6 +126,7 @@
 
   #custom-cursor{position:fixed;top:0;left:0;width:22px;height:22px;border-radius:50%;border:2px solid var(--blue);pointer-events:none;z-index:999;transform:translate(-999px,-999px);transition:width .2s ease,height .2s ease,background .2s ease;}
   @media (pointer:coarse){#custom-cursor{display:none!important;}}
+  #scroll-progress{position:fixed;top:0;left:0;height:3px;width:0%;background:var(--grad);z-index:150;}
 
   /* HERO */
   #top{position:relative;min-height:100vh;display:flex;align-items:center;padding:120px 6vw 80px;overflow:hidden;}
@@ -300,6 +301,7 @@
 </div>
 
 <div id="custom-cursor"></div>
+<div id="scroll-progress"></div>
 
 <nav>
   <a href="#top" class="logo">Abdoul<span class="grad-text">.dev</span></a>
@@ -1390,6 +1392,17 @@ window.addEventListener('scroll', ()=>{
   document.getElementById('blob1').style.transform = `translateY(${y*0.25}px)`;
   document.getElementById('blob2').style.transform = `translateY(${y*-0.18}px)`;
 }, { passive:true });
+
+/* ---------- SCROLL PROGRESS BAR ---------- */
+const scrollProgressBar = document.getElementById('scroll-progress');
+function updateScrollProgress(){
+  const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+  scrollProgressBar.style.width = pct + '%';
+}
+window.addEventListener('scroll', updateScrollProgress, { passive:true });
+window.addEventListener('resize', updateScrollProgress);
+updateScrollProgress();
 
 /* ---------- CARD TILT ---------- */
 function tiltMove(e){
