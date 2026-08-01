@@ -353,6 +353,7 @@
       <div class="hero-cta">
         <a href="#projets" class="btn-primary" data-i18n="heroBtnProjects">Voir mes projets</a>
         <a href="#contact" class="btn-ghost" data-i18n="heroBtnContact">Me contacter</a>
+        <a href="#" id="cv-download" download class="btn-ghost"><i class="fa-solid fa-download" style="margin-right:8px;"></i><span data-i18n="heroBtnCV">Télécharger mon CV</span></a>
       </div>
       <div class="socials">
         <a href="https://github.com/abdoulcoulibaly-web" target="_blank" rel="noopener" aria-label="GitHub" class="icon-btn"><i class="fa-brands fa-github"></i></a>
@@ -588,7 +589,7 @@ const STR = {
     heroGreeting:"Bonjour, je suis",
     heroPhotoPlaceholder:"photo de profil",
     heroDesc:"Passionné par le développement web moderne, je conçois des applications complètes en utilisant les technologies Front-End et Back-End. Étudiant en Licence Informatique — Développement d'Applications à IHEMSO puis HEC (Abidjan), je m'intéresse aussi à la cybersécurité, au réseautique et à l'IA.",
-    heroBtnProjects:"Voir mes projets", heroBtnContact:"Me contacter",
+    heroBtnProjects:"Voir mes projets", heroBtnContact:"Me contacter", heroBtnCV:"Télécharger mon CV",
     aboutEyebrow:"À propos", aboutTitle:"Qui suis-je ?",
     aboutP1:"Étudiant en dernière année de Licence Informatique, spécialisé en Développement d'Applications (IDA) à IHEMSO puis HEC, Abidjan.",
     aboutP2:"Je possède de solides bases en développement web Full Stack (JavaScript, Node.js, PHP, React, Spring Boot) et je m'oriente aussi vers l'analyse de données et l'intelligence artificielle, notamment via des certifications Cisco, pour concevoir des solutions basées sur les données.",
@@ -627,7 +628,7 @@ const STR = {
     heroGreeting:"Hello, I'm",
     heroPhotoPlaceholder:"profile photo",
     heroDesc:"Passionate about modern web development, I build complete applications using Front-End and Back-End technologies. A final-year Computer Science student — Application Development at IHEMSO then HEC (Abidjan), I'm also interested in cybersecurity, networking and AI.",
-    heroBtnProjects:"View my projects", heroBtnContact:"Contact me",
+    heroBtnProjects:"View my projects", heroBtnContact:"Contact me", heroBtnCV:"Download my CV",
     aboutEyebrow:"About", aboutTitle:"Who am I?",
     aboutP1:"Final-year Computer Science student, specializing in Application Development (IDA) at IHEMSO then HEC, Abidjan.",
     aboutP2:"I have solid foundations in Full Stack web development (JavaScript, Node.js, PHP, React, Spring Boot) and I'm also moving towards data analysis and artificial intelligence, notably through Cisco certifications, to design data-driven solutions.",
@@ -1103,6 +1104,14 @@ function applyStaticStrings(){
   document.getElementById('tw-title').setAttribute('content', t('pageTitle'));
   document.getElementById('tw-desc').setAttribute('content', t('pageDesc'));
   document.getElementById('html-root').setAttribute('lang', currentLang);
+
+  const cvFiles = {
+    fr: { href: "assets/cv/CV-Coulibaly-Abdoul-Ganime-FR.pdf", name: "CV-Coulibaly-Abdoul-Ganime-FR.pdf" },
+    en: { href: "assets/cv/CV-Coulibaly-Abdoul-Ganime-EN.pdf", name: "CV-Coulibaly-Abdoul-Ganime-EN.pdf" }
+  };
+  const cvLink = document.getElementById('cv-download');
+  cvLink.href = cvFiles[currentLang].href;
+  cvLink.setAttribute('download', cvFiles[currentLang].name);
 }
 
 function setLanguage(lang){
